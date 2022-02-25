@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: jenkins-argo-application
+  namespace: argocd
+spec:
+  project: default
+
+  source:
+    repoURL: https://github.com/sanjaitrain/jenkins.git
+    targetRevision: HEAD
+    path: /charts/jenkins/
+  destination: 
+    server: https://kubernetes.default.svc
+    namespace: CICD
+
+  syncPolicy:
+    syncOptions:
+    - CreateNamespace=true
+
+    automated:
+      selfHeal: true
+      prune: true
